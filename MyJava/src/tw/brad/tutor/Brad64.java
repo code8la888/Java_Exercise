@@ -11,6 +11,12 @@ public class Brad64 {
 		c1.start();
 		c2.start();
 		c3.start();
+		
+		/*
+		程式碼啟動了一個生產者的執行緒和三個消費者的執行緒，這些執行緒會同時運行，
+		但消費者的購買順序並不是固定或事先決定的，
+		當多個消費者同時想要購買東西時，他們會相爭進入buy()方法
+		*/
 	}
 }
 class Store {
@@ -21,13 +27,14 @@ class Store {
 	}
 	
 	synchronized void add(int add) throws InterruptedException {
+		//synchronized 關鍵字會確保在同一時間只有一個執行緒可以執行這個方法
 		System.out.printf("準備進貨，欲進貨數量: %d\n", add);
 		while (qty + add > max) {//若目前數量+欲進貨數量大於最大數量，進行等待
-			wait(); 
+			wait(); //當購買數量大於庫存數量，執行緒會進入等待
 		}
 		qty += add; //qty=qty+add;
 		System.out.printf("完成進貨，進貨數量: %d, 目前庫存: %d\n", add, qty);
-		notify();//通知執行緒
+		notify();//當生產者新曾庫存，他會通知等待的執行緒
 	}
 	
 	synchronized void buy(int buy, String name) throws InterruptedException{
@@ -50,8 +57,8 @@ class Producer extends Thread {
 	public void run() {
 		for (int i=0; i<10; i++) {
 			try {
-				store.add(5);
-				Thread.sleep(200);
+				store.add(5);//每次添加五個商品
+				Thread.sleep(200);//間隔兩百毫秒
 			} catch (InterruptedException e) {
 				System.out.println(e);
 			}
@@ -70,7 +77,7 @@ class Consumer extends Thread {
 	public void run() {
 		for (int i=0; i<10; i++) {
 			try {
-				store.buy((int)(Math.random()*3)+1, name);
+				store.buy((int)(Math.random()*3)+1, name);//每次隨機購買1~3個商品，循環十次
 			} catch (InterruptedException e) {
 				System.out.println(e);
 			}
