@@ -14,29 +14,29 @@ public class Brad64 {
 	}
 }
 class Store {
-	private int qty;
-	private int max;
-	Store(){
-		max = 10;
+	private int qty; //定義目前庫存數量
+	private int max; //定義最大庫存數量
+	Store(){ //建構式
+		max = 10; //設定最大庫存數量為10
 	}
 	
 	synchronized void add(int add) throws InterruptedException {
-		System.out.printf("準備進貨: %d\n", add);
-		while (qty + add > max) {
-			wait();
+		System.out.printf("準備進貨，欲進貨數量: %d\n", add);
+		while (qty + add > max) {//若目前數量+欲進貨數量大於最大數量，進行等待
+			wait(); 
 		}
-		qty += add;
-		System.out.printf("完成進貨: %d, 目前庫存: %d\n", add, qty);
-		notify();
+		qty += add; //qty=qty+add;
+		System.out.printf("完成進貨，進貨數量: %d, 目前庫存: %d\n", add, qty);
+		notify();//通知執行緒
 	}
 	
 	synchronized void buy(int buy, String name) throws InterruptedException{
 		System.out.printf("%s想買: %d\n", name, buy);
-		while (qty < buy) {
+		while (qty < buy) {//當目前庫存<購買數量，進行等待
 			wait();
 		}
-		qty -= buy;
-		System.out.printf("完成賣出: %d(%s), 目前庫存: %d\n", buy, name, qty);
+		qty -= buy; //qty=qty-buy
+		System.out.printf("完成訂單，購買數量: %d(%s), 目前剩餘庫存: %d\n", buy, name, qty);
 		notify();
 	}
 }
