@@ -23,19 +23,22 @@ public class Brad61 {
 			URL url = new URL("https://data.moa.gov.tw/Service/OpenData/ODwsv/ODwsvAgriculturalProduce.aspx");
 			//建立一個url物件，用來指定我們要訪問的網址
 			URLConnection conn =  url.openConnection();
-			//打開指定網址連結
+			//建立urlconnection物件，代表程式與遠端資源之間的連結，
 			BufferedInputStream bin = new BufferedInputStream(conn.getInputStream());
-			//建立一個緩衝輸入流
+			//建立一個緩衝輸入流，用來讀取暫存大量資料，讓程式不用每讀取一次就要請求一次，以提高後續讀取動作的效率
 			BufferedReader reader = new BufferedReader(new InputStreamReader(bin));
-			//用來讀取網址回傳的數據
+			//從網址讀取數據
 			String line; //儲存從網址讀取的每一行數據
-			StringBuffer sb = new StringBuffer();//拼接所有讀取到的行，變成一個完整的字串
+			StringBuffer sb = new StringBuffer();//拼接每一行讀到的數據，變成一個完整的字串
+			//依序讀取網址內的數據並將他們存放到sb變數中
 			while ( (line = reader.readLine()) != null) {
 				sb.append(line);
 			}
 			bin.close();
 			
 			parseJSON(sb.toString());
+			//sb.toString()會將StringBuffer轉換為字串物件。這是一個完整的JSON格式字串
+			//parseJSON方法會解析傳入的字串，讓你可以在程式操作這些資料
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
