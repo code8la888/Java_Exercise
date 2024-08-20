@@ -61,8 +61,8 @@ public class Brad61 {
 			Connection conn = DriverManager.getConnection(url, prop);
 			
 			Statement stmt = conn.createStatement();
-			stmt.executeUpdate("DELETE FROM gift");
-			stmt.executeUpdate("ALTER TABLE gift AUTO_INCREMENT = 1");
+//			stmt.executeUpdate("DELETE FROM gift");
+//			stmt.executeUpdate("ALTER TABLE gift AUTO_INCREMENT = 1");
 			
 			String sql = "INSERT INTO gift (name,feature,addr,picurl,city,town,lat,lng)" + 
 					" VALUES (?,?,?,?,?,?,?,?)";
